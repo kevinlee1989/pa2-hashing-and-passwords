@@ -37,7 +37,8 @@ uint8_t hex_to_byte(unsigned char h1, unsigned char h2){
 // Converting from 64 hex characters into 32-byte array correspoding
 // to the hex values.
 void hexstr_to_hash(char hexstr[], unsigned char hash[32]) {
-    for (int i = 0; i < 32; i++) {
+    int i;
+    for (i= 0; i < 32; i++) {
         hash[i] = hex_to_byte(hexstr[2 * i], hexstr[2 * i + 1]);
     }
 }
@@ -59,7 +60,8 @@ void test_hexstr_to_hash(){
     unsigned char hash[32];
     hexstr_to_hash(hexstr, hash);
     // hash should now contain { 0xa2, 0xc3, 0xb0, 0x2c, ... }
-    for(int i =0; i< sizeof(hash); i++){
+    int i;
+    for( i=0; i< sizeof(hash); i++){
         printf("%02x, ", hash[i]);
     }
 
