@@ -130,7 +130,7 @@ int main(int argc, char **argv){
     assert(check_password("password", given_hash) == 1);   // Should return 1
     assert(check_password("wrongpass", given_hash) == 0);  // Should return 0
 
-    printf("All tests passed.\n");
+    printf("All tests passed.\n"); // passed
 
     return 0;
 }
