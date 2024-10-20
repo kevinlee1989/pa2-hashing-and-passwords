@@ -120,8 +120,8 @@ int main(int argc, char **argv){
 
     printf("\n");
 
-*/
-// Example hash for the password "password"
+
+    // Example hash for the password "password"
     char hash_as_hexstr[] = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8";
     unsigned char given_hash[32];
 
@@ -133,6 +133,19 @@ int main(int argc, char **argv){
     assert(check_password("wrongpass", given_hash) == 0);  // Should return 0
 
     printf("All tests passed.\n"); // passed
+*/
+    unsined char given_hash[32];
+    hexstr_to_hash(argv[1], given_hash);
 
+    char password[256];
+    while(fgets(password, sizeof(password),stdin) != NULL){
+        
+        //Check if this password matches the given bash
+        if(check_password(password,given_hash)){
+            printf("Found password: SHA256(%s) = %s\n", password, argv[1]);
+            return 0;
+        }
+    }
+    printf("Did not find a matching password\n");
     return 0;
 }
