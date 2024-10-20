@@ -134,7 +134,7 @@ int main(int argc, char **argv){
 
     printf("All tests passed.\n"); // passed
 */
-    unsined char given_hash[32];
+    unsigned char given_hash[32];
     hexstr_to_hash(argv[1], given_hash);
 
     char password[256];
