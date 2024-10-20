@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <math.h>
 #include <openssl/sha.h>
+#include <ctype.h>
 
 // Given two hex characters in ASCII (0-9, a-f) 
 // representing a two-digit hexadecimal number, 
@@ -74,23 +75,57 @@ void test_hexstr_to_hash(){
     printf("test_hexstr_to_hash passed!\n");
 }
 
+// Function to hash a string and store the result in hash_output
+void hash_password(const char *password, unsigned char hash_output[SHA256_DIGEST_LENGTH]) {
+    SHA256((unsigned char *)password, strlen(password), hash_output);
+}
 
+// Function to compare two hashes
+int compare_hashes(const unsigned char hash1[SHA256_DIGEST_LENGTH], const unsigned char hash2[SHA256_DIGEST_LENGTH]) {
+    return memcmp(hash1, hash2, SHA256_DIGEST_LENGTH) == 0;
+}
 
-
-// **Milestone2***
+// **Milestone 2**
 int8_t check_password(char password[], unsigned char given_hash[32]) {
     unsigned char hashed_password[32];
+    SHA256((unsigned char *)password, strlen(password), hashed_password);
+    return compare_hashes(hashed_password, given_hash) ? 1 : 0;
+}
 
-    // Hash the input password using SHA256 function
-    SHA256((unsigned char *) password, strlen(password), hashed_password);
 
-    // Comparing with given and generated
-    if (memcmp(hashed_password, given_hash, SHA256_DIGEST_LENGTH) == 0) {
-        return 1;  // Hashes match
-    } else {
-        return 0;  // Hashes do not match
+
+int8_t crack_password(char password[], unsigned char given_hash[32]){
+
+    unsigned char current_hash[32];
+    size_t len = strlen(password);
+
+    // Trying the original password
+    hash_password(password, current_hash);
+    if(compare_hashes(current_hash, given_hash)){
+        return 1; // matching
     }
 
+    // If uppercased or lowercased
+    for(int i =0; i<len; i++){
+        if(isalpha(password[i])){
+            char original_char = password[i];
+
+            if(islower(password[i])){
+                password[i] = toupper(password[i]);
+            } 
+            else if(isupper(password[i])){
+                password[i] = tolower(password[i]);
+            }
+            // Hash and compare
+            hash_password(password, current_hash);
+            if (compare_hashes(current_hash, given_hash)) {
+                return 1;  // A variation matches
+            }
+
+            // Restore original character
+            password[i] = original_char;
+        }
+    }
 
 }
 int main(int argc, char **argv){
@@ -146,6 +181,9 @@ int main(int argc, char **argv){
         //Check if this password matches the given bash
         if(check_password(password,given_hash)){
             printf("Found password: SHA256(%s) = %s\n", password, argv[1]);
+            return 0;
+        } else if (crack_password(password, given_hash)) {
+            printf("Found matching password variation: SHA256(%s) = %s\n", password, argv[1]);
             return 0;
         }
     }
