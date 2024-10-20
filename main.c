@@ -140,12 +140,15 @@ int main(int argc, char **argv){
     char password[256];
     while(fgets(password, sizeof(password),stdin) != NULL){
         
+        // Remove the newline character from the input password
+        password[strcspn(password, "\n")] = 0;
+
         //Check if this password matches the given bash
         if(check_password(password,given_hash)){
             printf("Found password: SHA256(%s) = %s\n", password, argv[1]);
             return 0;
         }
     }
-    printf("Did not find a matching password\n");
+    printf("(CTRL/D) Did not find a matching password\n");
     return 0;
 }
