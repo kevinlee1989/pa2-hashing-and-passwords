@@ -106,7 +106,8 @@ int8_t crack_password(char password[], unsigned char given_hash[32]){
     }
 
     // If uppercased or lowercased
-    for(int i =0; i<len; i++){
+    int i;
+    for(i =0; i<len; i++){
         if(isalpha(password[i])){
             char original_char = password[i];
 
@@ -126,7 +127,10 @@ int8_t crack_password(char password[], unsigned char given_hash[32]){
             password[i] = original_char;
         }
     }
+    printf("<Press Ctrl-D for end of input>\n");
+    printf("Did not find a matching password\n");
 
+    return 0;
 }
 int main(int argc, char **argv){
 /*
@@ -187,6 +191,6 @@ int main(int argc, char **argv){
             return 0;
         }
     }
-    printf("(CTRL/D) Did not find a matching password\n");
+    
     return 0;
 }
