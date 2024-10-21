@@ -173,7 +173,18 @@ int main(int argc, char **argv){
 
     printf("All tests passed.\n"); // passed
 
+ 
+    
+    char password[] = "paSsword";
+    char hash_as_hexstr[] = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // SHA256 hash of "password"
     unsigned char given_hash[32];
+    hexstr_to_hash(hash_as_hexstr, given_hash);
+    int8_t match = crack_password(password, given_hash);
+    assert(match == 1);
+    assert(password[2] == 's'); // the uppercase 'S' has been lowercased
+*/
+
+   unsigned char given_hash[32];
     hexstr_to_hash(argv[1], given_hash);
 
     char password[256];
@@ -191,14 +202,5 @@ int main(int argc, char **argv){
             return 0;
         }
     }
-    */
-    char password[] = "paSsword";
-    char hash_as_hexstr[] = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // SHA256 hash of "password"
-    unsigned char given_hash[32];
-    hexstr_to_hash(hash_as_hexstr, given_hash);
-    int8_t match = crack_password(password, given_hash);
-    assert(match == 1);
-    assert(password[2] == 's'); // the uppercase 'S' has been lowercased
-
     return 0;
 }
