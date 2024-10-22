@@ -183,7 +183,7 @@ int main(int argc, char **argv){
     assert(match == 1);
     assert(password[2] == 's'); // the uppercase 'S' has been lowercased
 */
-
+//Making a Change in ieng6 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
    unsigned char given_hash[32];
     hexstr_to_hash(argv[1], given_hash);
 
